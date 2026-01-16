@@ -329,10 +329,12 @@ async def synthesize_speech(
     request_id = str(uuid.uuid4())[:8]
     logger.info(f"[{request_id}] TTS request: {len(text)} chars, voice_id={voice_id}")
     
-    # Acquire semaphore for concurrency control
+    # Acquire semaphore for concurrency control (Python 3.10 compatible)
     try:
-        async with asyncio.timeout(ServerConfig.REQUEST_TIMEOUT):
-            await _semaphore.acquire()
+        await asyncio.wait_for(
+            _semaphore.acquire(),
+            timeout=ServerConfig.REQUEST_TIMEOUT
+        )
     except asyncio.TimeoutError:
         raise HTTPException(
             status_code=503,
@@ -456,8 +458,11 @@ async def synthesize_speech_json(request: TTSRequest):
     
     request_id = str(uuid.uuid4())[:8]
     
-    async with asyncio.timeout(ServerConfig.REQUEST_TIMEOUT):
-        await _semaphore.acquire()
+    # Python 3.10 compatible timeout
+    await asyncio.wait_for(
+        _semaphore.acquire(),
+        timeout=ServerConfig.REQUEST_TIMEOUT
+    )
     
     await track_concurrent(True)
     

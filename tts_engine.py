@@ -120,8 +120,8 @@ class TTSEngine:
     def _download_model(self, name: str, dtype: str = "fp32") -> str:
         """Download a single model file."""
         filename = f"{name}{'' if dtype == 'fp32' else '_quantized' if dtype == 'q8' else f'_{dtype}'}.onnx"
-        graph = hf_hub_download(MODEL_ID, subfolder="onnx", filename=filename)
-        hf_hub_download(MODEL_ID, subfolder="onnx", filename=f"{filename}_data")
+        graph = hf_hub_download(MODEL_ID, subfolder="onnx", filename=filename, local_dir="./models")
+        hf_hub_download(MODEL_ID, subfolder="onnx", filename=f"{filename}_data", local_dir="./models")
         return graph
     
     def _create_sessions(self):

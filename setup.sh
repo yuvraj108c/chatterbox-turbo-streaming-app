@@ -43,12 +43,12 @@ else:
     print('⚠ CUDA not available, falling back to CPU')
 "
 
-# Start server
-echo ""
-echo "Starting server..."
-exec uvicorn server:app \
-    --host "$HOST" \
-    --port "$PORT" \
-    --workers "$WORKERS" \
-    --log-level "$LOG_LEVEL" \
-    --timeout-keep-alive 120
+# # Start server
+# echo ""
+# echo "Starting server..."
+# exec uvicorn server:app \
+#     --host "$HOST" \
+#     --port "$PORT" \
+#     --workers "$WORKERS" \
+#     --log-level "$LOG_LEVEL" \
+#     --timeout-keep-alive 120
